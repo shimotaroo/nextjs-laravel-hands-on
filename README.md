@@ -15,34 +15,76 @@ ENV TZ=UTC
 COPY my.cnf /etc/my.cnf
 ```
 
-## コンテナ起動
+## 環境構築
 
 ```sh
 make init
 ```
 
-## Laravelインストール
+以下の状態になればOK
+
+- `api`ディレクトリ内にLaravelがインストールされている
+- `localhost:80`にアクセスするとLaravelのウェルカムページが表示される
+- `front`ディレクトリ内にNext.jsがインストールされる
+- `localhost:3000`にアクセスするとNext.jsのウェルカムページが表示される
+
+## LaravelのDB接続情報更新
+
+`api/.env`を修正
+
+```
+DB_CONNECTION=mysql
+DB_HOST=db
+DB_PORT=3306
+DB_DATABASE=next_laravel
+DB_USERNAME=sample
+DB_PASSWORD=sample
+
+```
+## Tailwind CSSのインストールとセットアップ
 
 ```sh
-docker-compose exec api composer create-project laravel/laravel .
+make tailwind
 ```
 
-`api`ディレクトリ内にLaravelがインストールされる
+以下のファイルが作成されていたらOK
 
-`localhost:80`にアクセスするとLaravelのウェルカムページが表示される
+- tailwind.config.js
+- postcss.config.js
 
-## Next.jsインストール
+`front/tailwind.config.js`を修正
 
-```sh
-docker-compose exec front yarn create next-app  --typescript .
-
-# 開発用サーバー起動
-docker-compose exec front yarn dev
+```diff
+module.exports = {
++ mode: 'jit',
+- purge: [],
++ purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  darkMode: false, // or 'media' or 'class'
+  theme: {
+    extend: {},
+  },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
+}
 ```
 
-`front`ディレクトリ内にNext.jsがインストールされる
+`front/pages/_app.tsx`を修正
 
-`localhost:3000`にアクセスするとNext.jsのウェルカムページが表示される
+```diff
+- import '../styles/globals.css'
++ import 'tailwindcss/tailwind.css';
+import type { AppProps } from 'next/app'
 
-開発用サーバーの停止は`control + c`
+function MyApp({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />
+}
 
+export default MyApp
+```
+
+## Next.jsの開発用サーバーの起動・停止
+
+- 起動: `make dev`
+- 停止: `control + c`
