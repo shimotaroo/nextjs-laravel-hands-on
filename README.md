@@ -18,7 +18,7 @@ COPY my.cnf /etc/my.cnf
 ## コンテナ起動
 
 ```sh
-docker-compose up -d --build
+make init
 ```
 
 ## Laravelインストール
