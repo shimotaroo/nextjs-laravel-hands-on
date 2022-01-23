@@ -2,9 +2,18 @@
 
 ## 前提
 
-- M1Mac対応しています！
-- Intel製チップMacの場合は`.docker/db/Dockerfile`を以下の通り修正
+- M1Macにも対応しています！
 - Windowsでの動作確認は行っておらず環境構築のエラー対応はできないので悪しからず...
+
+## ブランチ指定でclone
+
+```
+git clone -b init https://github.com/shimotaroo/nextjs-laravel-hands-on.git
+```
+
+## DB用Dockerfileの修正（M1Mac以外）
+
+`.docker/db/Dockerfile`を修正
 
 ```diff
 - FROM --platform=linux/x86_64 mysql:8.0
