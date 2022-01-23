@@ -30,6 +30,8 @@ COPY --from=composer:2.0 /usr/bin/composer /usr/bin/composer
 
 COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
+# ENTRYPOINT ["docker-entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 WORKDIR /app
 
