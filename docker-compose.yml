@@ -1,0 +1,55 @@
+version: "3.8"
+
+services:
+  front:
+    build:
+      context: ./.docker/front
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/app:cached
+    stdin_open: true
+    tty: true
+    depends_on:
+      - nginx
+  nginx:
+    container_name: nginx
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - ./api:/app:cached
+    tty: true
+    depends_on:
+      - api
+  api:
+    build:
+      context: ./.docker/api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/app:cached
+    tty: true
+    environment:
+      - APP_ENV=development
+    depends_on:
+      - db
+  db:
+    build:
+      context: ./.docker/db
+      dockerfile: Dockerfile
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: next_laravel
+      MYSQL_USER: sample
+      MYSQL_PASSWORD: sample
+      MYSQL_ROOT_PASSWORD: sample
+      TZ: "Asia/Tokyo"
+    volumes:
+      - db-volume:/var/lib/mysql:cached
+
+volumes:
+  db-volume:
