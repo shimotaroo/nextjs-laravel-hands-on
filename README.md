@@ -5,6 +5,11 @@
 - M1Macにも対応しています！
 - Windowsでの動作確認は行っておらず環境構築のエラー対応はできないので悪しからず...
 
+## 使用技術
+
+- frontend: TypeScript/React/Next.js/Tailwind CSS
+- backend(api): PHP/Laravel
+- infra: Docker/Docker Compose
 ## ブランチ指定でclone
 
 ```
@@ -32,66 +37,37 @@ make init
 
 以下の状態になればOK
 
+### api(Laravel)
+
 - `api`ディレクトリ内にLaravelがインストールされている
 - `localhost:80`にアクセスするとLaravelのウェルカムページが表示される
+
+### frontend(Next.js)
+
 - `front`ディレクトリ内にNext.jsがインストールされる
-- `localhost:3000`にアクセスするとNext.jsのウェルカムページが表示される
+- `localhost:3000`にアクセスするとログイン画面が表示される
 
-## LaravelのDB接続情報更新
+<img width="557" alt="スクリーンショット 2022-01-24 23 55 13" src="https://user-images.githubusercontent.com/58982088/150806401-cef92bc1-633c-4bbc-943b-a08e17e0c800.png">
 
-`api/.env`を修正
+- `localhost:3000/memos`にアクセスするとメモ一覧画面が表示される
 
-```
-DB_CONNECTION=mysql
-DB_HOST=db
-DB_PORT=3306
-DB_DATABASE=next_laravel
-DB_USERNAME=sample
-DB_PASSWORD=sample
+<img width="710" alt="スクリーンショット 2022-01-24 23 55 31" src="https://user-images.githubusercontent.com/58982088/150806412-1b101330-dd62-4bf9-9fa0-2bbc8c1e7d15.png">
 
-```
-## Tailwind CSSのインストールとセットアップ
+- `localhost:3000/memos/post`にアクセスすると登録画面が表示される
 
-```sh
-make tailwind
-```
+<img width="546" alt="スクリーンショット 2022-01-24 23 55 49" src="https://user-images.githubusercontent.com/58982088/150806422-2466d8f6-9acd-4b93-bac6-63f56a1d28ef.png">
 
-以下のファイルが作成されていたらOK
+## GUIツールでDBに接続
 
-- tailwind.config.js
-- postcss.config.js
+- Sequel Ace
+- Table Plus
 
-`front/tailwind.config.js`を修正
+等のGUIツールでDB(MySQL)に接続。（以下接続情報）
 
-```diff
-module.exports = {
-+ mode: 'jit',
-- purge: [],
-+ purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
-  variants: {
-    extend: {},
-  },
-  plugins: [],
-}
-```
-
-`front/pages/_app.tsx`を修正
-
-```diff
-- import '../styles/globals.css'
-+ import 'tailwindcss/tailwind.css';
-import type { AppProps } from 'next/app'
-
-function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-}
-
-export default MyApp
-```
+ホスト: 127.0.0.1
+ユーザー: sample
+パスワード: sample
+データベース: next_laravel
 
 ## Next.jsの開発用サーバーの起動・停止
 
