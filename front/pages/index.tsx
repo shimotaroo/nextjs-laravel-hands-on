@@ -1,7 +1,28 @@
 import type { NextPage } from 'next';
+import { useState } from 'react';
 import { RequiredMark } from '../components/RequiredMark';
 
+// POSTデータの型
+type LoginForm = {
+  email: string;
+  password: string;
+};
+
+// バリデーションメッセージの型
+type Validation = LoginForm & { loginFailed: string };
+
 const Home: NextPage = () => {
+  // state定義
+  const [loginForm, setLoginForm] = useState<LoginForm>({
+    email: '',
+    password: '',
+  });
+  const [validation, setValidation] = useState<Validation>({
+    email: '',
+    password: '',
+    loginFailed: '',
+  });
+
   return (
     <div className='w-2/3 mx-auto py-24'>
       <div className='w-1/2 mx-auto border-2 px-12 py-16 rounded-2xl'>
