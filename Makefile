@@ -1,3 +1,4 @@
+# Docker
 init:
 	docker-compose up -d --build
 	docker-compose exec api composer install
@@ -15,5 +16,17 @@ down:
 build:
 	docker-compose build
 
+# next.js
 dev:
 	docker-compose exec front yarn dev
+
+axios:
+	docker-compose exec front yarn add axios
+
+# laravel
+sanctum:
+	docker-compose exec api composer require laravel/sanctum
+	docker-compose exec api php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+
+route:
+	docker-compose exec api php artisan route:list
