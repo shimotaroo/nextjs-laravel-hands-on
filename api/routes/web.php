@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// ログインAPI
+Route::post('/login', [LoginController::class, 'login']);
