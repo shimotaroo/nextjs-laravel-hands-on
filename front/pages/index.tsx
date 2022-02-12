@@ -4,6 +4,7 @@ import { ChangeEvent, useState } from 'react';
 import { RequiredMark } from '../components/RequiredMark';
 import { axiosApi } from '../lib/axios';
 import { useRouter } from 'next/router';
+import { useUserState } from '../atoms/userAtom';
 
 // POSTデータの型
 type LoginForm = {
@@ -27,6 +28,8 @@ const Home: NextPage = () => {
     password: '',
   });
   const [validation, setValidation] = useState<Validation>({});
+  // recoil stateの呼び出し
+  const { setUser } = useUserState();
 
   // POSTデータの更新
   const updateLoginForm = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +49,7 @@ const Home: NextPage = () => {
         axiosApi
           .post('/login', loginForm)
           .then((response: AxiosResponse) => {
-            console.log(response.data);
+            setUser(response.data.data);
             router.push('/memos');
           })
           .catch((err: AxiosError) => {
