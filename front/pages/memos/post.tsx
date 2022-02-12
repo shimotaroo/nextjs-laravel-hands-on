@@ -1,7 +1,8 @@
 import { AxiosError, AxiosResponse } from 'axios';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { useUserState } from '../../atoms/userAtom';
 import { RequiredMark } from '../../components/RequiredMark';
 import { axiosApi } from '../../lib/axios';
 
@@ -26,6 +27,16 @@ const Post: NextPage = () => {
     body: '',
   });
   const [validation, setValidation] = useState<Validation>({});
+  const { user } = useUserState();
+
+  // 初回レンダリング時にAPIリクエスト
+  useEffect(() => {
+    // ログイン中か判定
+    if (!user) {
+      router.push('/');
+      return;
+    }
+  }, [user, router]);
 
   // POSTデータの更新
   const updateMemoForm = (
