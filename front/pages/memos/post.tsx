@@ -29,7 +29,6 @@ const Post: NextPage = () => {
   const [validation, setValidation] = useState<Validation>({});
   const { user } = useUserState();
 
-  // 初回レンダリング時にAPIリクエスト
   useEffect(() => {
     // ログイン中か判定
     if (!user) {
