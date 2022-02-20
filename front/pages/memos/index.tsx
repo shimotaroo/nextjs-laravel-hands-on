@@ -22,8 +22,8 @@ const Memo: NextPage = () => {
   useEffect(() => {
     const init = async () => {
       // ログイン中か判定
-      await checkLoggedIn();
-      if (!user) {
+      const res: boolean = await checkLoggedIn();
+      if (!res) {
         router.push('/');
         return;
       }
