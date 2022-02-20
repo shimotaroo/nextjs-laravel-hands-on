@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useUserState } from '../../atoms/userAtom';
+import { useAuth } from '../../hooks/useAuth';
 import { axiosApi } from '../../lib/axios';
 
 type Memo = {
@@ -15,22 +16,27 @@ const Memo: NextPage = () => {
   // state定義
   const [memos, setMemos] = useState<Memo[]>([]);
   const { user } = useUserState();
+  const { checkLoggedIn } = useAuth();
 
   // 初回レンダリング時にAPIリクエスト
   useEffect(() => {
-    // ログイン中か判定
-    if (!user) {
-      router.push('/');
-      return;
-    }
-    axiosApi
-      .get('/api/memos')
-      .then((response: AxiosResponse) => {
-        console.log(response.data);
-        setMemos(response.data.data);
-      })
-      .catch((err: AxiosError) => console.log(err.response));
-  }, [user, router]);
+    const init = async () => {
+      // ログイン中か判定
+      await checkLoggedIn();
+      if (!user) {
+        router.push('/');
+        return;
+      }
+      axiosApi
+        .get('/api/memos')
+        .then((response: AxiosResponse) => {
+          console.log(response.data);
+          setMemos(response.data.data);
+        })
+        .catch((err: AxiosError) => console.log(err.response));
+    };
+    init();
+  }, []);
 
   return (
     <div className='w-2/3 mx-auto mt-32'>
